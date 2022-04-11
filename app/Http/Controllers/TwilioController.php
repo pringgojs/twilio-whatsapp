@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Twilio\Rest\Client;
+use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 
 class TwilioController extends Controller
@@ -51,5 +52,62 @@ class TwilioController extends Controller
     {
         info("webhook twilio");
         info($request->all());
+
+        $from = explode('+', $request['From']);
+        $from = isset($from[1]) ? $from[1] : null;
+
+        if (!$from) return false;
+
+        /** is media */
+        if (isset($request['MediaContentType0']) && isset($request['MediaUrl0'])) {
+            /** format ke CMS */
+
+            // [
+            //     'mimetype': '',
+            //     'data': ''
+            //     'filename': ''
+            // ];
+
+            $base_64 = base64_encode(file_get_contents($request['MediaUrl0']));
+            $data = [
+                'mimetype' => $request['MediaContentType0'],
+                'data' => $base_64,
+                'filename' => Str::random(10).".jpeg"
+            ];
+
+            info("webhook media");
+            info($data);
+
+        }
+
+        /** is location */
+        if (isset($request['Latitude'])) {
+            /** format ke CMS */
+            // [
+            //     latitude: -7.870908,
+            //     longitude: 111.488152,
+            //     description: 'Kantor Pengadilan Agama Ponorogo\nJl.IR.Juanda No.25, Ponorogo, Jawa Timur'
+            // ]
+
+            $data = [
+                'latitude' => $request['Latitude'],
+                'longitude' => $request['Longitude'],
+                'description' => $request['Address'],
+            ];
+
+            
+            info("webhook location");
+            info($data);
+        }
+
+        /** is Text */
+        if ($request['NumMedia'] == 0 && $request['Body'] != null) {
+            /** format CMS */
+            $body = $request['Body'];
+
+            info("webhook text");
+            info($body);
+
+        }
     }
 }
