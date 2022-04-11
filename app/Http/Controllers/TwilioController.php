@@ -26,6 +26,7 @@ class TwilioController extends Controller
         dd($message);
     }
 
+    /** send media from url */
     public function sendMediaUrl()
     {
         // Your Account SID and Auth Token from twilio.com/console
@@ -43,5 +44,12 @@ class TwilioController extends Controller
                            ) 
                   ); 
         dd($message);
+    }
+
+    /** catch all webhook */
+    public function webhook(Request $request)
+    {
+        info("webhook twilio");
+        info($request->all());
     }
 }
