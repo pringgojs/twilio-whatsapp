@@ -18,5 +18,6 @@ Route::get('inpo', function() {
 });
 
 Route::get('/', function () {
-    return view('welcome');
+    return "Laravel 9.x";
+    // return view('welcome');
 });
