@@ -2,9 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use Twilio\Rest\Client;
+use GuzzleHttp\Client as GuzzleClient;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
+use Twilio\Rest\Client as TwilioClient;
 
 class TwilioController extends Controller
 {
@@ -14,7 +15,7 @@ class TwilioController extends Controller
         // Your Account SID and Auth Token from twilio.com/console
         $sid = env('TWILIO_SID');
         $token = env('TWILIO_TOKEN');
-        $client = new Client($sid, $token);
+        $client = new TwilioClient($sid, $token);
 
         // Use the client to do fun stuff like send text messages!
         $message = $client->messages 
@@ -33,7 +34,7 @@ class TwilioController extends Controller
         // Your Account SID and Auth Token from twilio.com/console
         $sid = env('TWILIO_SID');
         $token = env('TWILIO_TOKEN');
-        $client = new Client($sid, $token);
+        $client = new TwilioClient($sid, $token);
 
         // Use the client to do fun stuff like send text messages!
         $message = $client->messages 
@@ -55,6 +56,7 @@ class TwilioController extends Controller
 
         $from = explode('+', $request['From']);
         $from = isset($from[1]) ? $from[1] : null;
+        $data = [];
 
         if (!$from) return false;
 
@@ -109,5 +111,25 @@ class TwilioController extends Controller
             info($body);
 
         }
+
+        $params = ['from' => $from.'@c.us', 'message' => $data];
+        $response_text = self::curl($params);
+        info("Response CMS:" . $response_text);
+    }
+
+    /** curl to CMS sipandu */
+    public function curl($data)
+    {
+        $url = env('URL_CMS_SIPANDU');
+        $client = new GuzzleClient([
+            'headers' => [ 'Content-Type' => 'application/json' ]
+        ]);
+        $response = $client->request('POST', $endpoint, [
+            'json' => $data,
+            'verify' => false
+        ]);
+
+        info("Status curl: ". $response->getStatusCode());
+        return $response->getBody();
     }
 }
