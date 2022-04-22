@@ -112,7 +112,7 @@ class TwilioController extends Controller
 
         }
 
-        $params = ['from' => $from.'@c.us', 'message' => $data];
+        $params = ['number' => $from.'@c.us', 'message' => $data];
         $response_text = self::curl($params);
         info("Response CMS:" . $response_text);
     }
