@@ -2,9 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use GuzzleHttp\Client as GuzzleClient;
+use Exception;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
+use GuzzleHttp\Client as GuzzleClient;
 use Twilio\Rest\Client as TwilioClient;
 
 class TwilioController extends Controller
@@ -121,15 +122,24 @@ class TwilioController extends Controller
     public function curl($data)
     {
         $url = env('URL_CMS_SIPANDU');
-        $client = new GuzzleClient([
-            'headers' => [ 'Content-Type' => 'application/json' ]
-        ]);
-        $response = $client->request('POST', $url, [
-            'json' => $data,
-            'verify' => false
-        ]);
 
-        info("Status curl: ". $response->getStatusCode());
-        return $response->getBody();
+        try {
+            $client = new GuzzleClient([
+                'headers' => [ 'Content-Type' => 'application/json' ]
+            ]);
+            $response = $client->request('POST', $url, [
+                'json' => $data,
+                'verify' => false
+            ]);
+    
+            info("Status curl: ". $response->getStatusCode());
+            return $response->getBody();
+
+        } catch (Exception $e) {
+            info('CURL ERROR: '. $url);
+            info($e);
+
+            return "System error";
+        }
     }
 }
