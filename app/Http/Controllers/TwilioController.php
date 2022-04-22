@@ -127,6 +127,7 @@ class TwilioController extends Controller
     {
         $url = env('URL_CMS_SIPANDU');
 
+        info($url);
         try {
             $client = new GuzzleClient([
                 'headers' => [ 'Content-Type' => 'application/json' ]
