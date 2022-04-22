@@ -124,7 +124,7 @@ class TwilioController extends Controller
         $client = new GuzzleClient([
             'headers' => [ 'Content-Type' => 'application/json' ]
         ]);
-        $response = $client->request('POST', $endpoint, [
+        $response = $client->request('POST', $url, [
             'json' => $data,
             'verify' => false
         ]);
