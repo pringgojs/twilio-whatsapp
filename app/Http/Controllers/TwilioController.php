@@ -115,7 +115,11 @@ class TwilioController extends Controller
 
         $params = ['number' => $from.'@c.us', 'message' => $data];
         $response_text = self::curl($params);
+
+        // return 
         info("Response CMS:" . $response_text);
+
+        self::responseToUser($from, $response_text);
     }
 
     /** curl to CMS sipandu */
@@ -141,5 +145,22 @@ class TwilioController extends Controller
 
             return "System error";
         }
+    }
+
+    /** send callback */
+    public function responseToUser($to = null, $message)
+    {
+        $sid = env('TWILIO_SID');
+        $token = env('TWILIO_TOKEN');
+        $client = new TwilioClient($sid, $token);
+
+        $message = $client->messages 
+                  ->create("whatsapp:+".$to, // to 
+                           array( 
+                               "from" => env('TWILIO_WA_FROM'),       
+                               "body" => $message 
+                           ) 
+                  ); 
+        info($message);
     }
 }
