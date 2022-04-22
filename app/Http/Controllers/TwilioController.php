@@ -125,7 +125,7 @@ class TwilioController extends Controller
             'headers' => [ 'Content-Type' => 'application/json' ]
         ]);
         $response = $client->request('POST', $url, [
-            'json' => $data,
+            'json' => json_encode($data),
             'verify' => false
         ]);
 
