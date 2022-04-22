@@ -56,7 +56,7 @@ class TwilioController extends Controller
 
         $from = explode('+', $request['From']);
         $from = isset($from[1]) ? $from[1] : null;
-        $data = [];
+        $data = null;
 
         if (!$from) return false;
 
@@ -105,10 +105,10 @@ class TwilioController extends Controller
         /** is Text */
         if ($request['NumMedia'] == 0 && $request['Body'] != null) {
             /** format CMS */
-            $body = $request['Body'];
+            $data = $request['Body'];
 
             info("webhook text");
-            info($body);
+            info($data);
 
         }
 
