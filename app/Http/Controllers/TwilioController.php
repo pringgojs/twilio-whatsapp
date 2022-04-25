@@ -30,7 +30,78 @@ class TwilioController extends Controller
         dd($message);
     }
 
-    /** send media from url */
+    /** 
+     * [POST] Send text message
+     * @param int number
+     * @param string message
+     * 
+     * @return string 
+    */
+    public function sendMessageText(Request $request)
+    {
+        try {
+            $response = $this->responseMessageText($request->number, $request->message);
+            return response($response['message'], $response['success'] ? 200 : 422)->header('Content-Type', 'text/plain');
+        } catch (Exception $e) {
+            return response('Error', 422)->header('Content-Type', 'text/plain');
+        }
+    }
+
+    /** 
+     * [POST] Send text message
+     * 
+     * @param int number
+     * @param string message
+     * @param string url media http://*./path-to-media/*.(.png, .jpg, etc.)
+     * 
+     * @return string 
+    */
+    public function sendMessageMedia(Request $request)
+    {
+        try {
+            $response = $this->responseMessageMedia($request->number, $request->message, $request->url);
+            return response($response['message'], $response['success'] ? 200 : 422)->header('Content-Type', 'text/plain');
+        } catch (Exception $e) {
+            return response('Error', 422)->header('Content-Type', 'text/plain');
+        }
+    }
+
+    /** 
+     * Twilio message text
+     * @param int $to Whatsapp number
+     * @param string $message Message
+     * 
+     * @return Array 
+    */
+    public function responseMessageText($to = null, $message)
+    {
+        $sid = env('TWILIO_SID');
+        $token = env('TWILIO_TOKEN');
+        $client = new TwilioClient($sid, $token);
+
+        try {
+            $twilio = $client->messages 
+                ->create("whatsapp:+".$to, // to 
+                        array( 
+                            "from" => env('TWILIO_WA_FROM'),       
+                            "body" => $message 
+                        ) 
+                ); 
+            return ['success' => true, 'message' => 'Success'];
+
+        } catch (RestException $e) {
+            return ['success' => false, 'message' => $e->getMessage()];
+        }
+    }
+
+    /** 
+     * Twilio message media
+     * @param int $to Whatsapp number
+     * @param string $message Message
+     * @param string url media http://*./path-to-media/*.(.png, .jpg, etc.)
+     * 
+     * @return Array 
+    */
     public function responseMessageMedia($to = null, $message = null, $url = null)
     {
         $sid = env('TWILIO_SID');
@@ -54,7 +125,10 @@ class TwilioController extends Controller
 
     }
 
-    /** catch all webhook */
+    /** 
+     * Catch all webhook from Twilio
+     *  
+     * */
     public function webhook(Request $request)
     {
         $from = explode('+', $request['From']);
@@ -145,51 +219,7 @@ class TwilioController extends Controller
         } catch (Exception $e) {
             info('CURL ERROR: '. $url);
             info($e);
-
             return "System error";
-        }
-    }
-
-    /** send callback */
-    public function responseMessageText($to = null, $message)
-    {
-        $sid = env('TWILIO_SID');
-        $token = env('TWILIO_TOKEN');
-        $client = new TwilioClient($sid, $token);
-
-        try {
-            $twilio = $client->messages 
-                ->create("whatsapp:+".$to, // to 
-                        array( 
-                            "from" => env('TWILIO_WA_FROM'),       
-                            "body" => $message 
-                        ) 
-                ); 
-            return ['success' => true, 'message' => 'Success'];
-
-        } catch (RestException $e) {
-            return ['success' => false, 'message' => $e->getMessage()];
-        }
-    }
-
-    /** POST json*/
-    public function sendMessageText(Request $request)
-    {
-        try {
-            $response = $this->responseMessageText($request->number, $request->message);
-            return response($response['message'], $response['success'] ? 200 : 422)->header('Content-Type', 'text/plain');
-        } catch (Exception $e) {
-            return response('Error', 422)->header('Content-Type', 'text/plain');
-        }
-    }
-
-    public function sendMessageMedia(Request $request)
-    {
-        try {
-            $response = $this->responseMessageMedia($request->number, $request->message, $request->url);
-            return response($response['message'], $response['success'] ? 200 : 422)->header('Content-Type', 'text/plain');
-        } catch (Exception $e) {
-            return response('Error', 422)->header('Content-Type', 'text/plain');
         }
     }
 }
