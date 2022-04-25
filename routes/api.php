@@ -17,6 +17,7 @@ use App\Http\Controllers\TwilioController;
 Route::prefix('v1')->group(function () {
     Route::post('webhook', [TwilioController::class, 'webhook']);
     Route::get('send-media-url', [TwilioController::class, 'sendMediaUrl']);
+    Route::post('send-message-text', [TwilioController::class, 'sendMessageText']);
     Route::get('test-message', [TwilioController::class, 'test']);
 });
 

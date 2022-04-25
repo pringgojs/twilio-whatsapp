@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Exception;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
+use Twilio\Exceptions\RestException;
 use GuzzleHttp\Client as GuzzleClient;
 use Twilio\Rest\Client as TwilioClient;
 
@@ -119,7 +120,7 @@ class TwilioController extends Controller
         // return 
         info("Response CMS:" . $response_text);
 
-        self::responseToUser($from, $response_text);
+        self::responseMessageText($from, $response_text);
     }
 
     /** curl to CMS sipandu */
@@ -149,19 +150,33 @@ class TwilioController extends Controller
     }
 
     /** send callback */
-    public function responseToUser($to = null, $message)
+    public function responseMessageText($to = null, $message)
     {
         $sid = env('TWILIO_SID');
         $token = env('TWILIO_TOKEN');
         $client = new TwilioClient($sid, $token);
 
-        $message = $client->messages 
-                  ->create("whatsapp:+".$to, // to 
-                           array( 
-                               "from" => env('TWILIO_WA_FROM'),       
-                               "body" => $message 
-                           ) 
-                  ); 
-        info($message);
+        try {
+            $twilio = $client->messages 
+                ->create("whatsapp:+".$to, // to 
+                        array( 
+                            "from" => env('TWILIO_WA_FROM'),       
+                            "body" => $message 
+                        ) 
+                ); 
+            return ['success' => true, 'message' => 'Success'];
+
+        } catch (RestException $e) {
+            return ['success' => false, 'message' => $e->getMessage()];
+        }
+    }
+
+    /** POST json*/
+    public function sendMessageText(Request $request)
+    {
+        $response = $this->responseMessageText($request->number, $request->message);
+
+        return response($response['message'], $response['success'] ? 200 : 422)
+                  ->header('Content-Type', 'text/plain');
     }
 }
