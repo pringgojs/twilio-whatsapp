@@ -8,8 +8,8 @@ Twilio App Laravel 9.x digunakan untuk API Whatsaapp secara resmi dengan Twilio.
 Fitur:
 
 -   Webhook untuk handle incoming dan outcoming message. Path: [POST] `api/webhook`. Support `Json` request.
--   Kirim pesan text. Path: `api/v1/text-message`
--   Kirim pesan text dengan url media. Path: `api/v1/send-media-url`
+-   Kirim pesan text. Path: [POST] `api/v1/send-message-text`
+-   Kirim pesan text dengan url media. Path: [POST] `api/v1/send-message-media`
 
 ## Setup
 
