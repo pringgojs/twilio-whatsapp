@@ -1,0 +1,61 @@
+ text
+ array (
+  'SmsMessageSid' => 'SM1c8e7f43cbfc4df21935e8568cc0cb29',
+  'NumMedia' => '0',
+  'ProfileName' => 'Pringgo Juni S.',
+  'SmsSid' => 'SM1c8e7f43cbfc4df21935e8568cc0cb29',
+  'WaId' => '6285736676648',
+  'SmsStatus' => 'received',
+  'Body' => 'tes',
+  'To' => 'whatsapp:+14155238886',
+  'NumSegments' => '1',
+  'ReferralNumMedia' => '0',
+  'MessageSid' => 'SM1c8e7f43cbfc4df21935e8568cc0cb29',
+  'AccountSid' => 'AC94074c9d49c6921d9e6a0c5cb6fc8814',
+  'From' => 'whatsapp:+6285736676648',
+  'ApiVersion' => '2010-04-01',
+)  
+
+
+img
+array (
+  'MediaContentType0' => 'image/jpeg',
+  'SmsMessageSid' => 'MMa8c8cfdfdc23497de0846ff1f2695707',
+  'NumMedia' => '1',
+  'ProfileName' => 'Pringgo Juni S.',
+  'SmsSid' => 'MMa8c8cfdfdc23497de0846ff1f2695707',
+  'WaId' => '6285736676648',
+  'SmsStatus' => 'received',
+  'Body' => NULL,
+  'To' => 'whatsapp:+14155238886',
+  'NumSegments' => '1',
+  'ReferralNumMedia' => '0',
+  'MessageSid' => 'MMa8c8cfdfdc23497de0846ff1f2695707',
+  'AccountSid' => 'AC94074c9d49c6921d9e6a0c5cb6fc8814',
+  'From' => 'whatsapp:+6285736676648',
+  'MediaUrl0' => 'https://api.twilio.com/2010-04-01/Accounts/AC94074c9d49c6921d9e6a0c5cb6fc8814/Messages/MMa8c8cfdfdc23497de0846ff1f2695707/Media/MEb84a2ca55dfc482ab489a25e4dcc8c20',
+  'ApiVersion' => '2010-04-01',
+)  
+
+
+location
+array (
+  'Latitude' => '-7.870908',
+  'Longitude' => '111.488152',
+  'Address' => 'Jl.IR.Juanda No.25, Ponorogo, Jawa Timur',
+  'SmsMessageSid' => 'SM4b92847abbf5391cac3159194b6ab53d',
+  'NumMedia' => '0',
+  'ProfileName' => 'Pringgo Juni S.',
+  'SmsSid' => 'SM4b92847abbf5391cac3159194b6ab53d',
+  'WaId' => '6285736676648',
+  'SmsStatus' => 'received',
+  'Label' => 'Kantor Pengadilan Agama Ponorogo',
+  'Body' => NULL,
+  'To' => 'whatsapp:+14155238886',
+  'NumSegments' => '1',
+  'ReferralNumMedia' => '0',
+  'MessageSid' => 'SM4b92847abbf5391cac3159194b6ab53d',
+  'AccountSid' => 'AC94074c9d49c6921d9e6a0c5cb6fc8814',
+  'From' => 'whatsapp:+6285736676648',
+  'ApiVersion' => '2010-04-01',
+)  
