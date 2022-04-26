@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Exception;
 use Illuminate\Support\Str;
+use Elephox\Mimey\MimeTypes;
 use Illuminate\Http\Request;
 use Twilio\Exceptions\RestException;
 use GuzzleHttp\Client as GuzzleClient;
@@ -147,11 +148,14 @@ class TwilioController extends Controller
             //     'filename': ''
             // ];
 
+            $mimes = new MimeTypes;
+            $extension = $mimes->getExtension($request['MediaContentType0']);
+
             $base_64 = base64_encode(file_get_contents($request['MediaUrl0']));
             $data = [
                 'mimetype' => $request['MediaContentType0'],
                 'data' => $base_64,
-                'filename' => Str::random(10).".jpeg"
+                'filename' => Str::random(10).".".$extension
             ];
 
             info("webhook media");
