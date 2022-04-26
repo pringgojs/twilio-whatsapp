@@ -3,8 +3,8 @@
 namespace App\Http\Controllers;
 
 use Exception;
+use Mimey\MimeTypes;
 use Illuminate\Support\Str;
-use Elephox\Mimey\MimeTypes;
 use Illuminate\Http\Request;
 use Twilio\Exceptions\RestException;
 use GuzzleHttp\Client as GuzzleClient;
